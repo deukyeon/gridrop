@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>1461B14F-BA89-4183-8992-FFFA52ECA3AA</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>711D8DF8889F05A5D8B606F3113BBF2C5201F561</key>
+		<string>https://github.com/deukyeon/gridrop.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Gridrop/Gridrop.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>711D8DF8889F05A5D8B606F3113BBF2C5201F561</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/deukyeon/gridrop.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>711D8DF8889F05A5D8B606F3113BBF2C5201F561</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>711D8DF8889F05A5D8B606F3113BBF2C5201F561</string>
+			<key>IDESourceControlWCCName</key>
+			<string>gridrop</string>
+		</dict>
+	</array>
+</dict>
+</plist>
