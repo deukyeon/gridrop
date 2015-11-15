@@ -1,2 +1,2 @@
 # gridrop
-crop an image to a grid
+crop a part of an image to a grid
