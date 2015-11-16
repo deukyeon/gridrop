@@ -106,6 +106,11 @@
     _assistView.frame = frame;
 }
 
+- (CGFloat)imageScale
+{
+    return _imageView.image.size.width / _imageView.frame.size.width;
+}
+
 - (void)cancelButton:(UIButton *)button
 {
     if(self.delegate)

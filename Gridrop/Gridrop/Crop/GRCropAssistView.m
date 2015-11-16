@@ -57,9 +57,11 @@
 {
     [super touchesMoved:touches withEvent:event];
     
-    if(touches.count == 1) {
-        CGPoint currentPoint = [[touches allObjects][0] locationInView:self];
-        CGPoint previousPoint = [[touches allObjects][0] previousLocationInView:self];
+    NSSet *allTouches = [event allTouches];
+    
+    if(allTouches.count == 1) {
+        CGPoint currentPoint = [[allTouches allObjects][0] locationInView:self];
+        CGPoint previousPoint = [[allTouches allObjects][0] previousLocationInView:self];
         
         _boxView.center =
         [self boxViewCenterWithPoint:CGPointMake(_boxView.center.x + (currentPoint.x - previousPoint.x),
@@ -67,22 +69,28 @@
         
         [self setNeedsDisplay];
     }
-    else if(touches.count == 2) {
+    else if(allTouches.count == 2) {
         CGPoint currentPoint[2], previousPoint[2];
         
-        currentPoint[0] = [[touches allObjects][0] locationInView:self];
-        currentPoint[1] = [[touches allObjects][1] locationInView:self];
+        currentPoint[0] = [[allTouches allObjects][0] locationInView:self];
+        currentPoint[1] = [[allTouches allObjects][1] locationInView:self];
         
-        previousPoint[0] = [[touches allObjects][0] previousLocationInView:self];
-        previousPoint[1] = [[touches allObjects][1] previousLocationInView:self];
+        previousPoint[0] = [[allTouches allObjects][0] previousLocationInView:self];
+        previousPoint[1] = [[allTouches allObjects][1] previousLocationInView:self];
         
         CGFloat currentLength = [self distanceWithPoint1:currentPoint[0] point2:currentPoint[1]];
         CGFloat previousLength = [self distanceWithPoint1:previousPoint[0] point2:previousPoint[1]];
         
         CGFloat scaleFactor = currentLength / previousLength;
-        _boxView.transform = CGAffineTransformScale(_boxView.transform, scaleFactor, scaleFactor);
-        _boxView.center = [self boxViewCenterWithPoint:_boxView.center];
 
+        CGPoint oldCenter = _boxView.center;
+        CGSize newSize = CGSizeMake(MAX(30, MIN(_boxView.frame.size.width * scaleFactor, self.bounds.size.width)),
+                                    MAX(10, MIN(_boxView.frame.size.height * scaleFactor, self.bounds.size.height)));
+
+        _boxView.frame = CGRectMake(oldCenter.x - newSize.width / 2, oldCenter.y - newSize.height / 2,
+                                    newSize.width, newSize.height);
+        _boxView.center = [self boxViewCenterWithPoint:_boxView.center];
+        
         [self setNeedsDisplay];
     }
 }
@@ -102,10 +110,11 @@
 
 - (CGRect)cropRect
 {
-    return CGRectMake(floor(_boxView.frame.origin.x),
-                      floor(_boxView.frame.origin.y),
-                      floor(_boxView.frame.size.width),
-                      floor(_boxView.frame.size.height));
+    return _boxView.frame;
+//    return CGRectMake(round(_boxView.frame.origin.x),
+//                      round(_boxView.frame.origin.y),
+//                      round(_boxView.frame.size.width),
+//                      round(_boxView.frame.size.height));
 }
 
 @end

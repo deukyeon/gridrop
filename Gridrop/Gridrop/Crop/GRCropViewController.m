@@ -53,18 +53,16 @@
     
     NSMutableArray *croppedImages = [NSMutableArray array];
     
-    CGFloat scale = self.originalImage.size.width / cropRect.size.width;
-    
-    CGRect scaledCropRect = CGRectMake(round(cropRect.origin.x * scale), round(cropRect.origin.y * scale),
-                                       round(cropRect.size.width * scale), round(cropRect.size.height * scale));
+    CGRect scaledCropRect = CGRectApplyAffineTransform(cropRect, CGAffineTransformMakeScale([view imageScale], [view imageScale]));
     
     CGFloat width = round(scaledCropRect.size.width / [GRSetting columnCount]);
     CGFloat height = round(scaledCropRect.size.height / [GRSetting rowCount]);
     
     for(int i=0; i<[GRSetting gridCount]; i++) {
-        CGRect rect = CGRectMake(scaledCropRect.origin.x + width * (i % [GRSetting columnCount]),
-                                 scaledCropRect.origin.y + height * (i / [GRSetting columnCount]),
+        CGRect rect = CGRectMake(round(scaledCropRect.origin.x + width * (i % [GRSetting columnCount])),
+                                 round(scaledCropRect.origin.y + height * (i / [GRSetting columnCount])),
                                  width, height);
+        
         UIImage *croppedImage = [GRImageManager CropImage:self.originalImage rect:rect];
         [croppedImages addObject:croppedImage];
         [croppedImage release];

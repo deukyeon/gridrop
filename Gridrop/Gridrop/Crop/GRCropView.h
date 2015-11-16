@@ -22,5 +22,6 @@
 @property (nonatomic, assign) id<GRCropViewDelegate> delegate;
 
 - (void)setImage:(UIImage *)image;
+- (CGFloat)imageScale;
 
 @end
