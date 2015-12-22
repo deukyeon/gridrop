@@ -39,7 +39,7 @@
 
 - (CGSize)buttonSize
 {
-    return CGSizeMake(60, 40);
+    return CGSizeMake(60, 60);
 }
 
 - (CGRect)loadButtonFrame
@@ -85,7 +85,15 @@
     [super dealloc];
 }
 
-- (void)setImage:(UIImage *)image AtIndex:(NSUInteger)index
+- (void)removeImageViews
+{
+    for(int i=0; i<_imageViews.count; i++) 
+        [_imageViews[i] removeFromSuperview];
+    
+    [_imageViews removeAllObjects];
+}
+
+- (void)setImage:(UIImage *)image atIndex:(NSUInteger)index
 {
     if(index >= _imageViews.count) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:[self imageViewFrameWithIndex:index]];
@@ -93,13 +101,12 @@
         [self addSubview:imageView];
         [imageView release];
     }
-    
     ((UIImageView *)_imageViews[index]).image = image;
 }
 
 - (UIImage *)imageAtIndex:(NSUInteger)index
 {
-    if(index > 2) return nil;
+    if(index >= _imageViews.count) return nil;
     return ((UIImageView *)_imageViews[index]).image;
 }
 

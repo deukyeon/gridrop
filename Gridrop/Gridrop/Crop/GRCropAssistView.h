@@ -11,5 +11,6 @@
 @interface GRCropAssistView : UIView
 
 - (CGRect)cropRect;
+- (void)setBoxViewFrameAndCenter;
 
 @end

@@ -13,8 +13,15 @@
 
 - (void)setFrame:(CGRect)frame
 {
-    [super setFrame:CGRectMake(frame.origin.x, frame.origin.y,
-                               frame.size.width, (frame.size.width / [GRSetting columnCount]) * [GRSetting rowCount])];
+    CGFloat width = frame.size.width;
+    CGFloat height = (frame.size.width / [GRSetting columnCount]) * [GRSetting rowCount];
+    
+    if(height > frame.size.height) {
+        width = width * (frame.size.height / height);
+        height = frame.size.height;
+    }
+    
+    [super setFrame:CGRectMake(frame.origin.x, frame.origin.y, width, height)];
 }
 
 @end

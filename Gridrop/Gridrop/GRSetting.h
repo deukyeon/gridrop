@@ -11,7 +11,15 @@
 @interface GRSetting : NSObject
 
 + (NSUInteger)gridCount;
+
 + (NSUInteger)rowCount;
++ (void)setRowCount:(NSUInteger)rowCount;
+
 + (NSUInteger)columnCount;
++ (void)setColumnCount:(NSUInteger)columnCount;
+
++ (NSString *)storedGridCountKey;
+
++(void)setRowCountAndColumnCountFromUserDefaults;
 
 @end

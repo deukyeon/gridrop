@@ -49,8 +49,15 @@
 - (void)setFrame:(CGRect)frame
 {
     [super setFrame:frame];
+    [self setBoxViewFrameAndCenter];
+}
+
+- (void)setBoxViewFrameAndCenter
+{
     _boxView.frame = self.bounds;
     _boxView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+
+    [self setNeedsDisplay];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event

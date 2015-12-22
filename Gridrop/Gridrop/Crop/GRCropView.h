@@ -14,6 +14,7 @@
 
 - (void)cropView:(GRCropView *)view touchedUpCancelButton:(UIButton *)button;
 - (void)cropView:(GRCropView *)view touchedUpFinishButton:(UIButton *)button cropRect:(CGRect)cropRect;
+- (void)cropView:(GRCropView *)view touchedUpGridCountControl:(UISegmentedControl *)control;
 
 @end
 
@@ -22,6 +23,9 @@
 @property (nonatomic, assign) id<GRCropViewDelegate> delegate;
 
 - (void)setImage:(UIImage *)image;
+
+- (void)refresh;
+
 - (CGFloat)imageScale;
 
 @end

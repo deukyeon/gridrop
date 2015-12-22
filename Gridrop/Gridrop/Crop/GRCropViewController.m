@@ -27,10 +27,21 @@
     
     if(!_cropView) {
         _cropView = [[GRCropView alloc] initWithFrame:self.view.bounds];
+        [GRSetting setRowCountAndColumnCountFromUserDefaults];
         _cropView.delegate = self;
         [_cropView setImage:self.originalImage];
         [self.view addSubview:_cropView];
         [_cropView release];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if(_cropView) {
+        [_cropView removeFromSuperview];
+        _cropView = nil;
     }
 }
 
@@ -55,8 +66,8 @@
     
     CGRect scaledCropRect = CGRectApplyAffineTransform(cropRect, CGAffineTransformMakeScale([view imageScale], [view imageScale]));
     
-    CGFloat width = round(scaledCropRect.size.width / [GRSetting columnCount]);
-    CGFloat height = round(scaledCropRect.size.height / [GRSetting rowCount]);
+    CGFloat width = ceil(scaledCropRect.size.width / [GRSetting columnCount]);
+    CGFloat height = ceil(scaledCropRect.size.height / [GRSetting rowCount]);
     
     for(int i=0; i<[GRSetting gridCount]; i++) {
         CGRect rect = CGRectMake(round(scaledCropRect.origin.x + width * (i % [GRSetting columnCount])),
@@ -72,6 +83,17 @@
         [self.delegate didFinishCropViewController:self croppedImages:croppedImages];
     
     [self.originalImage release];
+}
+
+- (void)cropView:(GRCropView *)view touchedUpGridCountControl:(UISegmentedControl *)control
+{
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:[GRSetting storedGridCountKey]] intValue] == control.selectedSegmentIndex) return;
+    
+    [[NSUserDefaults standardUserDefaults] setValue:@(control.selectedSegmentIndex) forKey:[GRSetting storedGridCountKey]];
+    
+    [GRSetting setRowCountAndColumnCountFromUserDefaults];
+    
+    [view refresh];
 }
 
 - (BOOL)prefersStatusBarHidden

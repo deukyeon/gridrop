@@ -8,6 +8,7 @@
 
 #import "GRCropView.h"
 #import "GRCropAssistView.h"
+#import "GRSetting.h"
 
 @interface GRCropView ()
 {
@@ -16,14 +17,36 @@
     
     UIButton *_cancelButton;
     UIButton *_finishButton;
+    
+    UISegmentedControl *_gridCountControl;
 }
 @end
 
 @implementation GRCropView
 
+- (CGFloat)paddingCropView
+{
+    return 10;
+}
+
+- (CGFloat)imageViewMinY
+{
+    return [self paddingCropView] + [self buttonSize].height;
+}
+
+- (CGFloat)imageViewMaxY
+{
+    return self.bounds.size.height - (2 * [self paddingCropView] + [self gridCountControlHeight]);
+}
+
+- (CGFloat)imageViewMaxHeight
+{
+    return [self imageViewMaxY] - [self imageViewMinY];
+}
+
 - (CGSize)buttonSize
 {
-    return CGSizeMake(60, 40);
+    return CGSizeMake(60, 60);
 }
 
 - (CGRect)cancelButtonFrame
@@ -37,9 +60,15 @@
                       [self buttonSize].width, [self buttonSize].height);
 }
 
-- (CGFloat)paddingImageView
+- (CGFloat)gridCountControlHeight
 {
-    return 10;
+    return 60.0;
+}
+
+- (CGRect)gridCountControlFrame
+{
+    return CGRectMake([self paddingCropView], self.bounds.size.height - [self paddingCropView] - [self gridCountControlHeight],
+                      self.bounds.size.width - 2 * [self paddingCropView], [self gridCountControlHeight]);
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -59,6 +88,17 @@
         [_finishButton setTitle:@"Finish" forState:UIControlStateNormal];
         [_finishButton addTarget:self action:@selector(finishButton:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_finishButton];
+        
+        _gridCountControl = [[UISegmentedControl alloc] initWithItems:@[@"3x1", @"3x2", @"3x3"]];
+        _gridCountControl.frame = [self gridCountControlFrame];
+        if([[NSUserDefaults standardUserDefaults] valueForKey:[GRSetting storedGridCountKey]] == nil)
+            _gridCountControl.selectedSegmentIndex = 0;
+        else
+            _gridCountControl.selectedSegmentIndex = [[[NSUserDefaults standardUserDefaults] valueForKey:[GRSetting storedGridCountKey]] intValue];
+        [_gridCountControl addTarget:self action:@selector(gridCountControl:) forControlEvents:UIControlEventValueChanged];
+        [self addSubview:_gridCountControl];
+        [_gridCountControl release];
+        
     }
     
     return self;
@@ -89,21 +129,26 @@
     
     CGFloat width, height;
     
-    width = self.bounds.size.width - 2 * [self paddingImageView];
+    width = self.bounds.size.width - 2 * [self paddingCropView];
     height = width / ratio;
     
-    if(height > self.bounds.size.height - [self buttonSize].height - 2 * [self paddingImageView]) {
+    if(height > [self imageViewMaxHeight]) {
         CGFloat oldHeight = height;
-        height = self.bounds.size.height - [self buttonSize].height - 2 * [self paddingImageView];
+        height = [self imageViewMaxHeight];
         width = width * (height / oldHeight);
     }
     
     CGRect frame = CGRectMake(self.bounds.size.width / 2 - width / 2,
-                              self.bounds.size.height / 2 - height / 2 + [self buttonSize].height / 2,
+                              [self imageViewMinY] + [self imageViewMaxHeight] / 2 - height / 2,
                               width, height);
     
     _imageView.frame = frame;
     _assistView.frame = frame;
+}
+
+- (void)refresh
+{
+    [_assistView setBoxViewFrameAndCenter];
 }
 
 - (CGFloat)imageScale
@@ -121,6 +166,12 @@
 {
     if(self.delegate)
         [self.delegate cropView:self touchedUpFinishButton:button cropRect:[_assistView cropRect]];
+}
+
+- (void)gridCountControl:(UISegmentedControl *)control
+{
+    if(self.delegate)
+        [self.delegate cropView:self touchedUpGridCountControl:control];
 }
 
 @end

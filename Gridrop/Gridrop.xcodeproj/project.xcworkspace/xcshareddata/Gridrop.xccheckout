@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>1461B14F-BA89-4183-8992-FFFA52ECA3AA</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>Gridrop</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>711D8DF8889F05A5D8B606F3113BBF2C5201F561</key>
 		<string>https://github.com/deukyeon/gridrop.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Gridrop/Gridrop.xcodeproj/project.xcworkspace</string>
+	<string>Gridrop/Gridrop.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>711D8DF8889F05A5D8B606F3113BBF2C5201F561</key>

@@ -80,19 +80,26 @@
     [indicatorView startAnimating];
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     
-    for(int i=0; i<[view imageCount]; i++) {
-        UIImageWriteToSavedPhotosAlbum([view imageAtIndex:i], nil, nil, nil);
-    }
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                    message:@"Check Photos App."
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
-    
-    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-    [indicatorView removeFromSuperview];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        for(int i=0; i<[view imageCount]; i++) {
+            UIImageWriteToSavedPhotosAlbum([view imageAtIndex:i], nil, nil, nil);
+            
+            [NSThread sleepForTimeInterval:0.1];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                            message:@"Check Photos App."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+            [indicatorView removeFromSuperview];
+        });
+    });
 }
 
 - (void)didCancelCropViewController:(GRCropViewController *)viewController
@@ -106,11 +113,9 @@
         viewController.originalImage = nil;
     }];
 
-    if(images.count >= [GRSetting gridCount]) {
-        for(int i=0; i<images.count; i++) {
-            [_mainView setImage:images[i] AtIndex:i];
-        }
-    }
+    [_mainView removeImageViews];
+    for(int i=0; i<images.count; i++)
+        [_mainView setImage:images[i] atIndex:i];
 }
 
 - (BOOL)prefersStatusBarHidden

@@ -21,7 +21,10 @@
 
 @property (nonatomic, assign) id<GRMainViewDelegate> delegate;
 
-- (void)setImage:(UIImage *)image AtIndex:(NSUInteger)index;
+- (void)removeImageViews;
+
+- (void)setImage:(UIImage *)image atIndex:(NSUInteger)index;
+
 - (UIImage *)imageAtIndex:(NSUInteger)index;
 - (NSUInteger)imageCount;
 
